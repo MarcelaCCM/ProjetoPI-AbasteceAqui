@@ -1,5 +1,6 @@
 package br.com.abasteceaqui.teste;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -14,24 +15,26 @@ import br.com.abasteceaqui.model.entidades.Cliente;
 public class TesteCliente {
 
 	private static int codigoCliente = 0;
-
+	
 	@BeforeClass
 	public static void deveSalvarUmClienteTest() {
-		Cliente cliente = new Cliente();
-		cliente.setCnpjCliente("111111111111");
-		cliente.setRazaoSocial("Cardoso Marcela LTDA");
-		cliente.setFone("11111111");
+				ClienteController repCliente = new ClienteController();
+				Cliente cliente = new Cliente();
+				cliente.setCnpjCliente("111111111111");
+				cliente.setRazaoSocial("Cardoso Marcela LTDA");
+				cliente.setFone("11111111");
 
-		Endereco endereco = new Endereco();
-		endereco.setRua("Orestes Barbosa");
-		endereco.setNumero("100");
-		endereco.setBairro("Heliopolis");
-		endereco.setCidade("Garanhuns");
-		endereco.setCep("55290000");
+				Endereco endereco = new Endereco();
+				endereco.setRua("Orestes Barbosa");
+				endereco.setNumero("100");
+				endereco.setBairro("Heliopolis");
+				endereco.setCidade("Garanhuns");
+				endereco.setCep("55290000");
 
-		cliente.setEndereco(endereco);
-
-		ClienteController repCliente = new ClienteController();
+				cliente.setEndereco(endereco);
+				
+		//Cliente c = criarCliente();
+				
 		repCliente.salvar(cliente);
 
 		List<Cliente> clientes = repCliente.listarCliente();
@@ -57,25 +60,39 @@ public class TesteCliente {
 	}
 
 	@Test
-	public void deveBuscaClientePorCodigoTest() {
+	public void deveBuscaClientePorNomeTest() {
 		ClienteController repCliente = new ClienteController();
-		Cliente cliente = repCliente.buscarPorCodigo(codigoCliente);
-
-		boolean existe = cliente != null ? true : false;
-		Assert.assertTrue(existe);
+		List<Cliente> listCliente = repCliente.listarCliente();
+		
+		for (Cliente cliente : listCliente) {
+			System.out.println("TESTAAAAAAAAAAAAAAANDO" + cliente);
+		}
+		
+		//System.out.println(listCliente);
+		
+		//Cliente c1 = criarCliente();
+		
+		//boolean existe = cliente != null ? true : false;
+		//Assert.assertTrue(existe);
+		//Assert.assertEquals("Teste", "Cardoso Marcela LTDA", cliente.getRazaoSocial() );
 	}
 
 	@Test
 	public void deveAlterarDadosDaClienteTest() {
 		ClienteController repCliente = new ClienteController();
 		Cliente cliente = repCliente.buscarPorCodigo(codigoCliente);
-		cliente.setRazaoSocial("Marcela Cardoso LTDA");
+		
+		
+		
+		cliente.setRazaoSocial("teste");
 
 		repCliente.alterar(cliente);
 
-		Cliente alteracaoDaCliente = repCliente.buscarPorCodigo(codigoCliente);
+		//Cliente alteracaoDaCliente = repCliente.buscarPorCodigo(codigoCliente);
 
-		Assert.assertEquals("Marcela Cardoso LTDA", alteracaoDaCliente.getRazaoSocial());
+		Cliente resp = repCliente.buscarPorCodigo(codigoCliente);
+		
+		Assert.assertEquals(resp, cliente);
 	}
 
 	@AfterClass
